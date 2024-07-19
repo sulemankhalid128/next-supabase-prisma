@@ -6,13 +6,29 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleLogin = async (): Promise<void> => {
-    const data: any = await signIn(email, password);
-    debugger;
-    if (data?.error) alert(data?.error.message);
-    else alert("Login successful!");
-  };
+  const handleLogin = async () => {
+    try {
+      
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email,password}),
+      });
 
+      if (response.ok) {
+        const result = await response.json();
+      } else {
+        const error = await response.json();
+        console.error('Login failed:', error);
+      }
+      debugger
+    } catch (error) {
+      debugger
+      console.error('Error during login:', error);
+    }
+  };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
