@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { signIn } from '../../../utils/auth';
 
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
-    debugger
   console.log('-------------->', req)
-    // If the login is successful
+  const { email, password } = await req.json();
+    const user = await signIn(email, password)
     return NextResponse.json({ message: 'Login successful' }, { status: 200 });
   } catch (error:any) {
     console.error('Error during login:', error);
